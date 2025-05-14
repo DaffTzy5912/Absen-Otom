@@ -3,133 +3,1727 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Absensi Karyawan</title>
+  <title>Absensi Premium</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <style>
+    :root {
+      --primary-color: #4361ee;
+      --secondary-color: #3f37c9;
+      --accent-color: #4895ef;
+      --success-color: #4cc9f0;
+      --warning-color: #f72585;
+      --dark-color: #212529;
+      --light-color: #f8f9fa;
+    }
+    
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
+      font-family: 'Poppins', 'Segoe UI', sans-serif;
     }
+    
     body {
-      font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(to right, #ff8a00, #e52e71);
+      background: linear-gradient(135deg, #4361ee, #3a0ca3);
+      min-height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
-      margin: 0;
-      color: #fff;
+      padding: 20px;
+      position: relative;
+      overflow-x: hidden;
     }
-    .form-container {
+    
+    /* Animated background elements */
+    .bg-shapes {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      overflow: hidden;
+    }
+    
+    .shape {
+      position: absolute;
+      border-radius: 50%;
       background: rgba(255, 255, 255, 0.1);
-      padding: 40px;
-      border-radius: 12px;
+      animation: float 15s infinite ease-in-out;
+    }
+    
+    .shape:nth-child(1) {
+      width: 120px;
+      height: 120px;
+      top: 10%;
+      left: 15%;
+      animation-delay: 0s;
+    }
+    
+    .shape:nth-child(2) {
+      width: 80px;
+      height: 80px;
+      top: 70%;
+      left: 80%;
+      animation-delay: 2s;
+    }
+    
+    .shape:nth-child(3) {
+      width: 200px;
+      height: 200px;
+      top: 40%;
+      left: 5%;
+      animation-delay: 4s;
+    }
+    
+    .shape:nth-child(4) {
+      width: 150px;
+      height: 150px;
+      top: 20%;
+      left: 75%;
+      animation-delay: 6s;
+    }
+    
+    @keyframes float {
+      0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 0.8;
+      }
+      50% {
+        transform: translateY(-20px) rotate(180deg);
+        opacity: 0.4;
+      }
+      100% {
+        transform: translateY(0) rotate(360deg);
+        opacity: 0.8;
+      }
+    }
+    
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    
+    @media (min-width: 768px) {
+      .container {
+        flex-direction: row;
+      }
+    }
+    
+    .card {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 30px;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-      width: 100%;
-      max-width: 500px;
-      text-align: center;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      transition: all 0.3s ease;
     }
-    .form-container h2 {
+    
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    }
+    
+    .form-container {
+      flex: 1;
+    }
+    
+    .stats-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    
+    h2 {
       font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 25px;
+      color: var(--light-color);
+      text-align: center;
+      position: relative;
+    }
+    
+    h2::after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      bottom: -10px;
+      transform: translateX(-50%);
+      width: 50px;
+      height: 3px;
+      background: var(--success-color);
+      border-radius: 3px;
+    }
+    
+    .input-group {
       margin-bottom: 20px;
-      color: #fff;
+      position: relative;
     }
-    label {
-      display: block;
-      font-size: 16px;
-      margin: 10px 0 5px;
-      color: #fff;
+    
+    .input-group i {
+      position: absolute;
+      left: 15px;
+      top: 17px;
+      color: var(--dark-color);
+      opacity: 0.6;
+      transition: all 0.3s ease;
     }
-    input {
+    
+    .input-group input,
+    .input-group select {
       width: 100%;
-      padding: 12px;
-      margin-top: 5px;
-      border-radius: 8px;
-      border: 1px solid #ddd;
-      background: #fff;
-      color: #333;
+      padding: 15px 15px 15px 45px;
+      border-radius: 12px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      background: rgba(255, 255, 255, 0.9);
+      color: var(--dark-color);
       font-size: 16px;
+      transition: all 0.3s ease;
+    }
+    
+    .input-group input:focus,
+    .input-group select:focus {
+      border-color: var(--accent-color);
+      box-shadow: 0 0 10px rgba(72, 149, 239, 0.3);
       outline: none;
-      transition: border 0.3s ease;
     }
-    input:focus {
-      border-color: #ff8a00;
+    
+    .input-group input:focus + i,
+    .input-group select:focus + i {
+      color: var(--accent-color);
+      opacity: 1;
     }
+    
+    .input-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--light-color);
+    }
+    
     button {
       width: 100%;
       padding: 15px;
-      margin-top: 20px;
-      background-color: #ff8a00;
+      background: var(--accent-color);
+      color: white;
       border: none;
-      color: #fff;
+      border-radius: 12px;
       font-size: 16px;
-      border-radius: 8px;
+      font-weight: 600;
       cursor: pointer;
-      transition: background 0.3s ease;
+      transition: all 0.3s ease;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
     }
+    
     button:hover {
-      background-color: #e52e71;
+      background: var(--secondary-color);
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(63, 55, 201, 0.3);
     }
+    
+    button:active {
+      transform: translateY(0);
+    }
+    
     .alert {
       margin-top: 20px;
-      color: #28a745;
+      padding: 15px;
+      border-radius: 12px;
+      font-weight: 500;
+      text-align: center;
+      opacity: 0;
+      transition: all 0.3s ease;
+      transform: translateY(-10px);
+    }
+    
+    .alert.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    .alert-success {
+      background: rgba(76, 201, 240, 0.2);
+      border: 1px solid var(--success-color);
+      color: var(--light-color);
+    }
+    
+    .alert-error {
+      background: rgba(247, 37, 133, 0.2);
+      border: 1px solid var(--warning-color);
+      color: var(--light-color);
+    }
+    
+    /* Stats Styling */
+    .stats-box {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+    
+    .stat-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 15px;
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 12px;
+      transition: all 0.3s ease;
+    }
+    
+    .stat-item:hover {
+      background: rgba(255, 255, 255, 0.25);
+    }
+    
+    .stat-title {
+      color: var(--light-color);
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .stat-value {
+      font-weight: 700;
+      color: var(--success-color);
+    }
+    
+    .recent-activity {
+      margin-top: 20px;
+    }
+    
+    .activity-item {
+      background: rgba(255, 255, 255, 0.15);
+      padding: 15px;
+      border-radius: 12px;
+      margin-bottom: 10px;
+      border-left: 3px solid var(--accent-color);
+      transition: all 0.3s ease;
+    }
+    
+    .activity-item:hover {
+      background: rgba(255, 255, 255, 0.25);
+      transform: translateX(5px);
+    }
+    
+    .activity-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+    
+    .activity-name {
+      font-weight: 600;
+      color: var(--light-color);
+    }
+    
+    .activity-time {
+      font-size: 12px;
+      opacity: 0.8;
+      color: var(--light-color);
+    }
+    
+    .activity-details {
+      font-size: 14px;
+      color: var(--light-color);
+      opacity: 0.8;
+    }
+    
+    .search-box {
+      margin-bottom: 20px;
+    }
+    
+    .search-box input {
+      width: 100%;
+      padding: 15px 15px 15px 45px;
+      border-radius: 12px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      background: rgba(255, 255, 255, 0.2);
+      color: var(--light-color);
+      font-size: 16px;
+      transition: all 0.3s ease;
+    }
+    
+    .search-box input::placeholder {
+      color: rgba(255, 255, 255, 0.7);
+    }
+    
+    .search-box input:focus {
+      border-color: var(--accent-color);
+      background: rgba(255, 255, 255, 0.3);
+      outline: none;
+    }
+    
+    .search-box {
+      position: relative;
+    }
+    
+    .search-box i {
+      position: absolute;
+      left: 15px;
+      top: 17px;
+      color: var(--light-color);
+      opacity: 0.7;
+    }
+    
+    /* Loader */
+    .loader {
+      display: none;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: white;
+      animation: spin 1s ease-in-out infinite;
+    }
+    
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+      .container {
+        padding: 10px;
+      }
+      
+      h2 {
+        font-size: 20px;
+      }
+      
+      .input-group input,
+      .input-group select,
+      button {
+        padding: 12px;
+        font-size: 14px;
+      }
+      
+      .input-group i {
+        top: 14px;
+      }
+    }
+    
+    /* Time display */
+    .time-display {
+      text-align: center;
+      margin-bottom: 20px;
+      color: var(--light-color);
+      font-size: 18px;
+      font-weight: 700;
+    }
+    
+    /* Switch toggle */
+    .toggle-switch {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+    
+    .toggle-label {
+      color: var(--light-color);
+      font-size: 14px;
+    }
+    
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 50px;
+      height: 24px;
+    }
+    
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(255, 255, 255, 0.2);
+      transition: .4s;
+      border-radius: 24px;
+    }
+    
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 16px;
+      width: 16px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      transition: .4s;
+      border-radius: 50%;
+    }
+    
+    input:checked + .slider {
+      background-color: var(--success-color);
+    }
+    
+    input:checked + .slider:before {
+      transform: translateX(26px);
+    }
+    
+    /* User profile */
+    .user-profile {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+    
+    .profile-avatar {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: var(--accent-color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      color: white;
       font-weight: bold;
+    }
+    
+    .profile-info {
+      flex: 1;
+    }
+    
+    .profile-name {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--light-color);
+    }
+    
+    .profile-status {
+      font-size: 14px;
+      color: var(--success-color);
+    }
+    
+    /* Tab Navigation */
+    .tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    
+    .tab {
+      padding: 10px 15px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      color: var(--light-color);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-align: center;
+      flex: 1;
+    }
+    
+    .tab.active {
+      background: var(--accent-color);
+    }
+    
+    .tab-content {
       display: none;
     }
-    .alert.error {
-      color: #dc3545;
+    
+    .tab-content.active {
+      display: block;
+    }
+    
+    /* Pagination */
+    .pagination {
+      display: flex;
+      justify-content: center;
+      gap: 5px;
+      margin-top: 20px;
+    }
+    
+    .pagination-item {
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 5px;
+      color: var(--light-color);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .pagination-item.active,
+    .pagination-item:hover {
+      background: var(--accent-color);
     }
   </style>
 </head>
 <body>
-  <div class="form-container">
-    <h2>Form Absensi</h2>
-    <form id="absenForm">
-      <label for="nama">Nama</label>
-      <input type="text" id="nama" name="nama" required />
-
-      <label for="umur">Umur</label>
-      <input type="number" id="umur" name="umur" required />
-
-      <label for="kelas">Kelas / Divisi</label>
-      <input type="text" id="kelas" name="kelas" required />
-
-      <button type="submit">Kirim Absensi</button>
-      <div id="alert" class="alert">Absensi berhasil!</div>
-      <div id="alertError" class="alert error">Gagal mengirim absensi! Coba lagi.</div>
-    </form>
+  <div class="bg-shapes">
+    <div class="shape"></div>
+    <div class="shape"></div>
+    <div class="shape"></div>
+    <div class="shape"></div>
+  </div>
+  
+  <div class="container">
+    <div class="form-container card">
+      <div class="time-display" id="currentTime"></div>
+      
+      <div class="user-profile">
+        <div class="profile-avatar" id="profileInitial">A</div>
+        <div class="profile-info">
+          <div class="profile-name" id="profileName">Guest User</div>
+          <div class="profile-status">Ready to check in</div>
+        </div>
+      </div>
+      
+      <h2>Form Absensi Premium</h2>
+      
+      <div class="tabs">
+        <div class="tab active" data-tab="check-in">Check-in</div>
+        <div class="tab" data-tab="history">Riwayat</div>
+        <div class="tab" data-tab="profile">Profil</div>
+      </div>
+      
+      <div class="tab-content active" id="check-in">
+        <form id="absenForm">
+          <div class="input-group">
+            <label for="nama">Nama Lengkap</label>
+            <input type="text" id="nama" name="nama" placeholder="Masukkan nama lengkap" autocomplete="name" required />
+            <i class="fas fa-user"></i>
+          </div>
+          
+          <div class="input-group">
+            <label for="umur">Umur</label>
+            <input type="number" id="umur" name="umur" placeholder="Masukkan umur" min="1" max="100" required />
+            <i class="fas fa-birthday-cake"></i>
+          </div>
+          
+          <div class="input-group">
+            <label for="kelas">Divisi / Kelas</label>
+            <select id="kelas" name="kelas" required>
+              <option value="" disabled selected>Pilih divisi atau kelas</option>
+              <option value="Marketing">Marketing</option>
+              <option value="IT">IT</option>
+              <option value="HR">HR</option>
+              <option value="Finance">Finance</option>
+              <option value="Operations">Operations</option>
+              <option value="SMP 1">SMP 1</option>
+              <option value="SMP 2">SMP 2</option>
+              <option value="SMP 3">SMP 3</option>
+            </select>
+            <i class="fas fa-briefcase"></i>
+          </div>
+          
+          <div class="toggle-switch">
+            <span class="toggle-label">Simpan informasi profil</span>
+            <label class="switch">
+              <input type="checkbox" id="saveProfile" checked>
+              <span class="slider"></span>
+            </label>
+          </div>
+          
+          <button type="submit" id="submitBtn">
+            <span>Kirim Absensi</span>
+            <div class="loader" id="submitLoader"></div>
+            <i class="fas fa-paper-plane"></i>
+          </button>
+          
+          <div class="alert alert-success" id="alertSuccess">
+            <i class="fas fa-check-circle"></i> Absensi berhasil dikirim!
+          </div>
+          
+          <div class="alert alert-error" id="alertError">
+            <i class="fas fa-exclamation-circle"></i> Gagal mengirim absensi! Coba lagi.
+          </div>
+        </form>
+      </div>
+      
+      <div class="tab-content" id="history">
+        <div class="search-box">
+          <input type="text" id="searchActivity" placeholder="Cari riwayat absensi...">
+          <i class="fas fa-search"></i>
+        </div>
+        
+        <div class="recent-activity" id="recentActivity">
+          <div class="activity-loading">Memuat data...</div>
+        </div>
+        
+        <div class="pagination" id="activityPagination"></div>
+      </div>
+      
+      <div class="tab-content" id="profile">
+        <div class="input-group">
+          <label for="profileFullName">Nama Lengkap</label>
+          <input type="text" id="profileFullName" placeholder="Nama lengkap">
+          <i class="fas fa-user"></i>
+        </div>
+        
+        <div class="input-group">
+          <label for="profileAge">Umur</label>
+          <input type="number" id="profileAge" placeholder="Umur">
+          <i class="fas fa-birthday-cake"></i>
+        </div>
+        
+        <div class="input-group">
+          <label for="profileDivision">Divisi / Kelas</label>
+          <select id="profileDivision">
+            <option value="" disabled selected>Pilih divisi atau kelas</option>
+            <option value="Marketing">Marketing</option>
+            <option value="IT">IT</option>
+            <option value="HR">HR</option>
+            <option value="Finance">Finance</option>
+            <option value="Operations">Operations</option>
+            <option value="SMP 1">SMP 1</option>
+            <option value="SMP 2">SMP 2</option>
+            <option value="SMP 3">SMP 3</option>
+          </select>
+          <i class="fas fa-briefcase"></i>
+        </div>
+        
+        <button id="saveProfileBtn">
+          <span>Simpan Profil</span>
+          <i class="fas fa-save"></i>
+        </button>
+      </div>
+    </div>
+    
+    <div class="stats-container">
+      <div class="card">
+        <h2>Statistik Absensi</h2>
+        
+        <div class="stats-box">
+          <div class="stat-item">
+            <div class="stat-title">
+              <i class="fas fa-user-check"></i>
+              <span>Total Absensi</span>
+            </div>
+            <div class="stat-value" id="totalAbsensi">-</div>
+          </div>
+          
+          <div class="stat-item">
+            <div class="stat-title">
+              <i class="fas fa-users"></i>
+              <span>Total Pengguna</span>
+            </div>
+            <div class="stat-value" id="totalUsers">-</div>
+          </div>
+          
+          <div class="stat-item">
+            <div class="stat-title">
+              <i class="fas fa-clock"></i>
+              <span>Hari Ini</span>
+            </div>
+            <div class="stat-value" id="todayAbsensi">-</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="card">
+        <h2>Aktivitas Terbaru</h2>
+        
+        <div class="recent-activity" id="latestActivity">
+          <div class="activity-item">
+            <div class="activity-header">
+              <div class="activity-name">Memuat data...</div>
+              <div class="activity-time"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <script>
-    document.getElementById("absenForm").addEventListener("submit", async function (e) {
-      e.preventDefault();
-      const nama = document.getElementById("nama").value;
-      const umur = document.getElementById("umur").value;
-      const kelas = document.getElementById("kelas").value;
-      const waktu = new Date().toLocaleString();
-
-      const res = await fetch("/api/absen", {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: new URLSearchParams({ nama, umur, kelas, waktu })
-      });
-
-      const alertSuccess = document.getElementById("alert");
-      const alertError = document.getElementById("alertError");
+    document.addEventListener('DOMContentLoaded', function() {
+      // Tab navigation
+      const tabs = document.querySelectorAll('.tab');
+      const tabContents = document.querySelectorAll('.tab-content');
       
-      if (res.ok) {
-        alertSuccess.style.display = "block";
+      tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          const target = tab.dataset.tab;
+          
+          // Update active tab
+          tabs.forEach(t => t.classList.remove('active'));
+          tab.classList.add('active');
+          
+          // Show corresponding content
+          tabContents.forEach(content => {
+            content.classList.remove('active');
+            if (content.id === target) {
+              content.classList.add('active');
+            }
+          });
+        });
+      });
+      
+      // Current time display
+      function updateTime() {
+        const now = new Date();
+        const options = { 
+          weekday: 'long', 
+          year: 'numeric', 
+          month: 'long', 
+          day: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit'
+        };
+        document.getElementById('currentTime').textContent = now.toLocaleDateString('id-ID', options);
+      }
+      
+      updateTime();
+      setInterval(updateTime, 1000);
+      
+      // Form submission
+      const absenForm = document.getElementById('absenForm');
+      const submitBtn = document.getElementById('submitBtn');
+      const submitLoader = document.getElementById('submitLoader');
+      const alertSuccess = document.getElementById('alertSuccess');
+      const alertError = document.getElementById('alertError');
+      
+      absenForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        // Show loader, disable button
+        submitBtn.disabled = true;
+        submitLoader.style.display = 'inline-block';
+        submitBtn.querySelector('span').style.opacity = '0.5';
+        submitBtn.querySelector('i').style.display = 'none';
+        
+        const nama = document.getElementById('nama').value;
+        const umur = document.getElementById('umur').value;
+        const kelas = document.getElementById('kelas').value;
+        const waktu = new Date().toLocaleString('id-ID');
+        
+        // Save profile if checkbox is checked
+        if (document.getElementById('saveProfile').checked) {
+          localStorage.setItem('userProfile', JSON.stringify({
+            nama,
+            umur,
+            kelas
+          }));
+          updateProfileDisplay(nama);
+        }
+        
+        try {
+          const res = await fetch('/api/absen', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: new URLSearchParams({ 
+              nama, 
+              umur, 
+              kelas, 
+              waktu
+            })
+          });
+          
+          if (res.ok) {
+            // Success
+            alertSuccess.classList.add('show');
+            
+            // Update UI stats immediately
+            fetchStats();
+            fetchLatestActivity();
+            
+            setTimeout(() => {
+              alertSuccess.classList.remove('show');
+              absenForm.reset();
+              
+              // Reset button state
+              submitBtn.disabled = false;
+              submitLoader.style.display = 'none';
+              submitBtn.querySelector('span').style.opacity = '1';
+              submitBtn.querySelector('i').style.display = 'inline-block';
+            }, 2000);
+          } else {
+            throw new Error('Request failed');
+          }
+        } catch (error) {
+          console.error('Error:', error);
+          
+          // Error handling
+          alertError.classList.add('show');
+          
+          setTimeout(() => {
+            alertError.classList.remove('show');
+            
+            // Reset button state
+            submitBtn.disabled = false;
+            submitLoader.style.display = 'none';
+            submitBtn.querySelector('span').style.opacity = '1';
+            submitBtn.querySelector('i').style.display = 'inline-block';
+          }, 3000);
+        }
+      });
+      
+      // Load saved profile
+      function loadSavedProfile() {
+        const savedProfile = localStorage.getItem('userProfile');
+        if (savedProfile) {
+          const profile = JSON.parse(savedProfile);
+          
+          // Update form fields
+          document.getElementById('nama').value = profile.nama || '';
+          document.getElementById('umur').value = profile.umur || '';
+          document.getElementById('kelas').value = profile.kelas || '';
+          
+          // Update profile fields
+          document.getElementById('profileFullName').value = profile.nama || '';
+          document.getElementById('profileAge').value = profile.umur || '';
+          document.getElementById('profileDivision').value = profile.kelas || '';
+          
+          // Update display
+          updateProfileDisplay(profile.nama);
+        }
+      }
+      
+      function updateProfileDisplay(name) {
+        const profileName = document.getElementById('profileName');
+        const profileInitial = document.getElementById('profileInitial');
+        
+        if (name) {
+          profileName.textContent = name;
+          profileInitial.textContent = name.charAt(0).toUpperCase();
+        }
+      }
+      
+      // Profile save functionality
+      document.getElementById('saveProfileBtn').addEventListener('click', function() {
+        const name = document.getElementById('profileFullName').value;
+        const age = document.getElementById('profileAge').value;
+        const division = document.getElementById('profileDivision').value;
+        
+        if (name && age && division) {
+          localStorage.setItem('userProfile', JSON.stringify({
+            nama: name,
+            umur: age,
+            kelas: division
+          }));
+          
+          updateProfileDisplay(name);
+          
+          // Also update the form fields
+          document.getElementById('nama').value = name;
+          document.getElementById('umur').value = age;
+          document.getElementById('kelas').value = division;
+          
+          alert('Profil berhasil disimpan!');
+        } else {
+          alert('Harap lengkapi semua data profil!');
+        }
+      });
+      
+      // Stats functionality
+      async function fetchStats() {
+        try {
+          const response = await fetch('/api/stats');
+          if (response.ok) {
+            const data = await response.json();
+            
+            document.getElementById('totalAbsensi').textContent = data.totalAbsensi || 0;
+            document.getElementById('totalUsers').textContent = data.uniqueUsers || 0;
+            document.getElementById('todayAbsensi').textContent = data.todayCount || 0;
+          }
+        } catch (error) {
+          console.error('Error fetching stats:', error);
+        }
+      }
+      
+      // Latest activity
+      async function fetchLatestActivity() {
+        try {
+          const response = await fetch('/api/latest-activity');
+          if (response.ok) {
+            const data = await response.json();
+            
+            const activityContainer = document.getElementById('latestActivity');
+            activityContainer.innerHTML = '';
+            
+            if (data.length === 0) {
+              activityContainer.innerHTML = '<div class="activity-item">Belum ada aktivitas</div>';
+              return;
+            }
+            
+            // Show the latest 5 activities
+            data.slice(0, 5).forEach(item => {
+              const activityItem = document.createElement('div');
+              activityItem.className = 'activity-item';
+              
+              activityItem.innerHTML = `
+                <div class="activity-header">
+                  <div class="activity-name">${item.nama}</div>
+                  <div class="activity-time">${formatRelativeTime(new Date(item.waktu))}</div>
+                </div>
+                <div class="activity-details">
+                  ${item.umur ? `${item.umur} tahun · ` : ''}${item.kelas || 'N/A'}
+                </div>
+              `;
+              
+              activityContainer.appendChild(activityItem);
+            });
+          }
+        } catch (error) {
+          console.error('Error fetching latest activity:', error);
+        }
+      }
+      
+      // Function to format relative time
+      function formatRelativeTime(date) {
+        const now = new Date();
+        const diffInSeconds = Math.floor((now - date) / 1000);
+        
+        if (diffInSeconds < 60) {
+          return 'Baru saja';
+        } else if (diffInSeconds < 3600) {
+          const minutes = Math.floor(diffInSeconds / 60);
+          return `${minutes} menit yang lalu`;
+        } else if (diffInSeconds < 86400) {
+          const hours = Math.floor(diffInSeconds / 3600);
+          return `${hours} jam yang lalu`;
+        } else {
+          const days = Math.floor(diffInSeconds / 86400);
+          return `${days} hari yang lalu`;
+        }
+      }
+      
+      // History tab functionality
+      async function loadActivityHistory(page = 1, search = '') {
+        const recentActivity = document.getElementById('recentActivity');
+        const activityPagination = document.getElementById('activityPagination');
+        
+        recentActivity.innerHTML = '<div class="activity-loading">Memuat data...</div>';
+        
+        try {
+          const params = new URLSearchParams({
+            page,
+            limit: 10,
+            ...(search && { search })
+          });
+          
+          const response = await fetch(`/api/absensi-history?${params}`);
+          
+          if (response.ok) {
+            const data = await response.json();
+            
+            recentActivity.innerHTML = '';
+            
+            if (data.items.length === 0) {
+              recentActivity.innerHTML = '<div class="activity-item">Tidak ada data absensi</div>';
+              return;
+            }
+            
+            data.items.forEach(item => {
+              const activityItem = document.createElement('div');
+              activityItem.className = 'activity-item';
+              
+              activityItem.innerHTML = `
+                <div class="activity-header">
+                  <div class="activity-name">${item.nama}</div>
+                  <div class="activity-time">${formatRelativeTime(new Date(item.waktu))}</div>
+                </div>
+                <div class="activity-details">
+                  ${item.umur ? `${item.umur} tahun · ` : ''}${item.kelas || 'N/A'}
+                </div>
+              `;
+              
+              recentActivity.appendChild(activityItem);
+            });
+            
+            // Create pagination
+            activityPagination.innerHTML = '';
+            
+            // Only show pagination if there are multiple pages
+            if (data.totalPages > 1) {
+              for (let i = 1; i <= data.totalPages; i++) {
+                const pageItem = document.createElement('div');
+                pageItem.className = `pagination-item ${i === page ? 'active' : ''}`;
+                pageItem.textContent = i;
+                
+                pageItem.addEventListener('click', () => {
+                  loadActivityHistory(i, search);
+                });
+                
+                activityPagination.appendChild(pageItem);
+              }
+            }
+          }
+        } catch (error) {
+          console.error('Error loading activity history:', error);
+          recentActivity.innerHTML = '<div class="activity-item">Error loading data. Please try again.</div>';
+        }
+      }
+      
+      // Search functionality
+      const searchInput = document.getElementById('searchActivity');
+      let searchTimer;
+      
+      searchInput.addEventListener('input', function() {
+        clearTimeout(searchTimer);
+        
+        searchTimer = setTimeout(() => {
+          loadActivityHistory(1, this.value.trim());
+        }, 300);
+      });
+      
+      // Initialize everything
+      loadSavedProfile();
+      fetchStats();
+      fetchLatestActivity();
+      
+      // Load history when user clicks on history tab
+      document.querySelector('.tab[data-tab="history"]').addEventListener('click', () => {
+        loadActivityHistory();
+      });
+    });
+    
+    // Simulate backend API responses for demo purposes
+  const mockData = {
+    stats: {
+      totalAbsensi: 124,
+      uniqueUsers: 48,
+      todayCount: 15
+    },
+    latestActivity: [
+      { nama: "Ahmad Fauzi", umur: 28, kelas: "IT", waktu: new Date(Date.now() - 5 * 60000).toISOString() },
+      { nama: "Siti Nurhaliza", umur: 22, kelas: "HR", waktu: new Date(Date.now() - 23 * 60000).toISOString() },
+      { nama: "Budi Santoso", umur: 35, kelas: "Finance", waktu: new Date(Date.now() - 47 * 60000).toISOString() },
+      { nama: "Dewi Kartika", umur: 19, kelas: "SMP 2", waktu: new Date(Date.now() - 120 * 60000).toISOString() },
+      { nama: "Rudi Hermawan", umur: 31, kelas: "Operations", waktu: new Date(Date.now() - 180 * 60000).toISOString() }
+    ],
+    history: []
+  };
+
+  // Generate some mock history data
+  function generateMockHistory() {
+    const divisions = ["Marketing", "IT", "HR", "Finance", "Operations", "SMP 1", "SMP 2", "SMP 3"];
+    const names = ["Ahmad", "Budi", "Cindy", "Dewi", "Eko", "Fira", "Galih", "Hana", "Indra", "Joko"];
+    const surnames = ["Pratama", "Wijaya", "Sari", "Putra", "Nugraha", "Susanto", "Hidayat", "Kusuma", "Santoso", "Wati"];
+    
+    const result = [];
+    for (let i = 0; i < 50; i++) {
+      const firstName = names[Math.floor(Math.random() * names.length)];
+      const lastName = surnames[Math.floor(Math.random() * surnames.length)];
+      const division = divisions[Math.floor(Math.random() * divisions.length)];
+      const age = Math.floor(Math.random() * 30) + 15;
+      const daysAgo = Math.floor(Math.random() * 30);
+      const hoursAgo = Math.floor(Math.random() * 24);
+      
+      result.push({
+        nama: `${firstName} ${lastName}`,
+        umur: age,
+        kelas: division,
+        waktu: new Date(Date.now() - (daysAgo * 86400000) - (hoursAgo * 3600000)).toISOString()
+      });
+    }
+    
+    return result;
+  }
+  
+  // Initialize mock history data
+  mockData.history = generateMockHistory();
+  
+  // Mock API functions
+  const mockAPI = {
+    async submitAbsensi(data) {
+      return new Promise((resolve, reject) => {
         setTimeout(() => {
-          alertSuccess.style.display = "none";
-          document.getElementById("absenForm").reset();
-        }, 2000);
-      } else {
-        alertError.style.display = "block";
+          // Simulate server processing
+          if (Math.random() > 0.1) { // 90% success rate
+            // Add to history
+            mockData.history.unshift({
+              nama: data.nama,
+              umur: parseInt(data.umur),
+              kelas: data.kelas,
+              waktu: new Date().toISOString()
+            });
+            
+            // Update stats
+            mockData.stats.totalAbsensi++;
+            mockData.stats.todayCount++;
+            
+            // Check if user is unique
+            const existingUsers = new Set(mockData.history.map(item => item.nama.toLowerCase()));
+            mockData.stats.uniqueUsers = existingUsers.size;
+            
+            // Update latest activity
+            mockData.latestActivity.unshift({
+              nama: data.nama,
+              umur: parseInt(data.umur),
+              kelas: data.kelas,
+              waktu: new Date().toISOString()
+            });
+            
+            mockData.latestActivity = mockData.latestActivity.slice(0, 5);
+            
+            resolve({ success: true });
+          } else {
+            // Simulate occasional server error
+            reject(new Error('Server error'));
+          }
+        }, 1500); // Simulate network delay
+      });
+    },
+    
+    async getStats() {
+      return new Promise(resolve => {
         setTimeout(() => {
-          alertError.style.display = "none";
-        }, 3000);
+          resolve(mockData.stats);
+        }, 300);
+      });
+    },
+    
+    async getLatestActivity() {
+      return new Promise(resolve => {
+        setTimeout(() => {
+          resolve(mockData.latestActivity);
+        }, 300);
+      });
+    },
+    
+    async getHistory(page = 1, limit = 10, search = '') {
+      return new Promise(resolve => {
+        setTimeout(() => {
+          let filteredHistory = [...mockData.history];
+          
+          // Apply search filter if provided
+          if (search) {
+            const searchLower = search.toLowerCase();
+            filteredHistory = filteredHistory.filter(item => 
+              item.nama.toLowerCase().includes(searchLower) || 
+              item.kelas.toLowerCase().includes(searchLower)
+            );
+          }
+          
+          // Sort by most recent first
+          filteredHistory.sort((a, b) => new Date(b.waktu) - new Date(a.waktu));
+          
+          // Pagination
+          const totalItems = filteredHistory.length;
+          const totalPages = Math.ceil(totalItems / limit);
+          const startIndex = (page - 1) * limit;
+          const endIndex = startIndex + limit;
+          const itemsForPage = filteredHistory.slice(startIndex, endIndex);
+          
+          resolve({
+            items: itemsForPage,
+            currentPage: page,
+            totalPages,
+            totalItems
+          });
+        }, 500);
+      });
+    }
+  };
+  
+  // Override fetch for our mock API endpoints
+  const originalFetch = window.fetch;
+  window.fetch = function(url, options) {
+    if (url === '/api/absen' && options?.method === 'POST') {
+      const formData = new URLSearchParams(options.body);
+      const data = {};
+      for (const [key, value] of formData.entries()) {
+        data[key] = value;
+      }
+      return mockAPI.submitAbsensi(data)
+        .then(result => {
+          return {
+            ok: true,
+            json: () => Promise.resolve(result)
+          };
+        })
+        .catch(error => {
+          console.error('Mock API error:', error);
+          return {
+            ok: false,
+            status: 500,
+            statusText: error.message
+          };
+        });
+    } else if (url === '/api/stats') {
+      return mockAPI.getStats()
+        .then(data => {
+          return {
+            ok: true,
+            json: () => Promise.resolve(data)
+          };
+        });
+    } else if (url === '/api/latest-activity') {
+      return mockAPI.getLatestActivity()
+        .then(data => {
+          return {
+            ok: true,
+            json: () => Promise.resolve(data)
+          };
+        });
+    } else if (url.startsWith('/api/absensi-history')) {
+      const params = new URL(url, window.location.origin).searchParams;
+      const page = parseInt(params.get('page') || '1');
+      const limit = parseInt(params.get('limit') || '10');
+      const search = params.get('search') || '';
+      
+      return mockAPI.getHistory(page, limit, search)
+        .then(data => {
+          return {
+            ok: true,
+            json: () => Promise.resolve(data)
+          };
+        });
+    }
+    
+    // Fall back to original fetch for any other requests
+    return originalFetch(url, options);
+  };
+  
+  // Add export functionality
+  function addExportFeature() {
+    const exportBtn = document.createElement('button');
+    exportBtn.innerHTML = '<i class="fas fa-download"></i> Export Riwayat';
+    exportBtn.style.marginTop = '20px';
+    exportBtn.style.backgroundColor = 'var(--secondary-color)';
+    
+    exportBtn.addEventListener('click', async function() {
+      try {
+        // Get all history data
+        const response = await mockAPI.getHistory(1, 9999);
+        const data = response.items;
+        
+        if (!data || data.length === 0) {
+          alert('Tidak ada data untuk diekspor');
+          return;
+        }
+        
+        // Convert to CSV
+        const headers = ['Nama', 'Umur', 'Divisi/Kelas', 'Waktu'];
+        const csvRows = [headers.join(',')];
+        
+        data.forEach(item => {
+          const row = [
+            `"${item.nama}"`,
+            item.umur,
+            `"${item.kelas}"`,
+            `"${new Date(item.waktu).toLocaleString('id-ID')}"`
+          ];
+          csvRows.push(row.join(','));
+        });
+        
+        const csvString = csvRows.join('\n');
+        
+        // Create download link
+        const blob = new Blob([csvString], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement('a');
+        const url = URL.createObjectURL(blob);
+        
+        link.setAttribute('href', url);
+        link.setAttribute('download', `absensi-export-${new Date().toISOString().slice(0, 10)}.csv`);
+        link.style.display = 'none';
+        
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        
+      } catch (error) {
+        console.error('Error exporting data:', error);
+        alert('Gagal mengekspor data. Silakan coba lagi.');
       }
     });
+    
+    document.getElementById('history').appendChild(exportBtn);
+  }
+  
+  // Add dark mode toggle
+  function addDarkModeToggle() {
+    const toggleContainer = document.createElement('div');
+    toggleContainer.className = 'toggle-switch';
+    toggleContainer.style.marginTop = '20px';
+    
+    toggleContainer.innerHTML = `
+      <span class="toggle-label">Mode Gelap</span>
+      <label class="switch">
+        <input type="checkbox" id="darkModeToggle">
+        <span class="slider"></span>
+      </label>
+    `;
+    
+    document.getElementById('profile').appendChild(toggleContainer);
+    
+    // Check for saved preference
+    const isDarkMode = localStorage.getItem('darkMode') === 'true';
+    document.getElementById('darkModeToggle').checked = isDarkMode;
+    
+    if (isDarkMode) {
+      enableDarkMode();
+    }
+    
+    // Add event listener
+    document.getElementById('darkModeToggle').addEventListener('change', function() {
+      if (this.checked) {
+        enableDarkMode();
+        localStorage.setItem('darkMode', 'true');
+      } else {
+        disableDarkMode();
+        localStorage.setItem('darkMode', 'false');
+      }
+    });
+  }
+  
+  function enableDarkMode() {
+    document.documentElement.style.setProperty('--primary-color', '#3a0ca3');
+    document.documentElement.style.setProperty('--secondary-color', '#4361ee');
+    document.documentElement.style.setProperty('--accent-color', '#7209b7');
+    document.documentElement.style.setProperty('--success-color', '#3f37c9');
+    document.documentElement.style.setProperty('--dark-color', '#f8f9fa');
+    document.documentElement.style.setProperty('--light-color', '#212529');
+    
+    // Update background
+    document.body.style.background = 'linear-gradient(135deg, #3a0ca3, #7209b7)';
+  }
+  
+  function disableDarkMode() {
+    document.documentElement.style.setProperty('--primary-color', '#4361ee');
+    document.documentElement.style.setProperty('--secondary-color', '#3f37c9');
+    document.documentElement.style.setProperty('--accent-color', '#4895ef');
+    document.documentElement.style.setProperty('--success-color', '#4cc9f0');
+    document.documentElement.style.setProperty('--warning-color', '#f72585');
+    document.documentElement.style.setProperty('--dark-color', '#212529');
+    document.documentElement.style.setProperty('--light-color', '#f8f9fa');
+    
+    // Update background
+    document.body.style.background = 'linear-gradient(135deg, #4361ee, #3a0ca3)';
+  }
+  
+  // Add notifications feature
+  function setupNotifications() {
+    const notificationsToggle = document.createElement('div');
+    notificationsToggle.className = 'toggle-switch';
+    notificationsToggle.style.marginTop = '20px';
+    
+    notificationsToggle.innerHTML = `
+      <span class="toggle-label">Aktifkan Notifikasi</span>
+      <label class="switch">
+        <input type="checkbox" id="notificationsToggle">
+        <span class="slider"></span>
+      </label>
+    `;
+    
+    document.getElementById('profile').appendChild(notificationsToggle);
+    
+    // Check for saved preference and browser support
+    const notificationsEnabled = localStorage.getItem('notificationsEnabled') === 'true';
+    const toggle = document.getElementById('notificationsToggle');
+    toggle.checked = notificationsEnabled;
+    
+    if (!('Notification' in window)) {
+      toggle.disabled = true;
+      const note = document.createElement('div');
+      note.textContent = 'Browser Anda tidak mendukung notifikasi desktop';
+      note.style.fontSize = '12px';
+      note.style.marginTop = '5px';
+      note.style.color = 'var(--light-color)';
+      notificationsToggle.appendChild(note);
+    } else {
+      toggle.addEventListener('change', function() {
+        if (this.checked) {
+          requestNotificationPermission();
+        } else {
+          localStorage.setItem('notificationsEnabled', 'false');
+        }
+      });
+      
+      // Check if we should request permission
+      if (notificationsEnabled && Notification.permission !== 'granted') {
+        requestNotificationPermission();
+      }
+    }
+  }
+  
+  function requestNotificationPermission() {
+    Notification.requestPermission().then(permission => {
+      if (permission === 'granted') {
+        localStorage.setItem('notificationsEnabled', 'true');
+        document.getElementById('notificationsToggle').checked = true;
+        
+        // Show test notification
+        const notification = new Notification('Notifikasi Absensi Premium', {
+          body: 'Notifikasi berhasil diaktifkan!',
+          icon: '/favicon.ico'
+        });
+      } else {
+        localStorage.setItem('notificationsEnabled', 'false');
+        document.getElementById('notificationsToggle').checked = false;
+        alert('Anda perlu memberikan izin untuk menerima notifikasi');
+      }
+    });
+  }
+  
+  // Add data visualization
+  function setupDataVisualization() {
+    const visualizationContainer = document.createElement('div');
+    visualizationContainer.className = 'card';
+    visualizationContainer.style.marginTop = '20px';
+    
+    visualizationContainer.innerHTML = `
+      <h2>Grafik Absensi</h2>
+      <div class="chart-tabs">
+        <button class="chart-tab active" data-chart="daily">Harian</button>
+        <button class="chart-tab" data-chart="division">Divisi</button>
+      </div>
+      <canvas id="absenceChart" height="250"></canvas>
+    `;
+    
+    document.querySelector('.stats-container').appendChild(visualizationContainer);
+    
+    // Setup tabs
+    const chartTabs = visualizationContainer.querySelectorAll('.chart-tab');
+    chartTabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        // Update active state
+        chartTabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        
+        // Update chart
+        renderChart(tab.dataset.chart);
+      });
+    });
+    
+    // Add chart styling
+    const style = document.createElement('style');
+    style.textContent = `
+      .chart-tabs {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 15px;
+        justify-content: center;
+      }
+      
+      .chart-tab {
+        background: rgba(255, 255, 255, 0.1);
+        border: none;
+        color: var(--light-color);
+        padding: 8px 15px;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+      
+      .chart-tab.active, .chart-tab:hover {
+        background: var(--accent-color);
+      }
+    `;
+    document.head.appendChild(style);
+    
+    // Initial render
+    renderChart('daily');
+  }
+  
+  function renderChart(type) {
+    // Get canvas context
+    const ctx = document.getElementById('absenceChart').getContext('2d');
+    
+    // Clear previous chart if exists
+    if (window.absenceChart) {
+      window.absenceChart.destroy();
+    }
+    
+    let chartData;
+    
+    if (type === 'daily') {
+      // Prepare data for daily chart (last 7 days)
+      const labels = [];
+      const data = [];
+      
+      for (let i = 6; i >= 0; i--) {
+        const date = new Date();
+        date.setDate(date.getDate() - i);
+        labels.push(date.toLocaleDateString('id-ID', { weekday: 'short', day: 'numeric' }));
+        
+        // Count entries for this day
+        const dayStart = new Date(date);
+        dayStart.setHours(0, 0, 0, 0);
+        const dayEnd = new Date(date);
+        dayEnd.setHours(23, 59, 59, 999);
+        
+        const count = mockData.history.filter(item => {
+          const itemDate = new Date(item.waktu);
+          return itemDate >= dayStart && itemDate <= dayEnd;
+        }).length;
+        
+        data.push(count);
+      }
+      
+      chartData = {
+        labels,
+        datasets: [{
+          label: 'Absensi Harian',
+          data,
+          backgroundColor: 'rgba(76, 201, 240, 0.3)',
+          borderColor: 'rgba(76, 201, 240, 1)',
+          borderWidth: 2,
+          tension: 0.4,
+          fill: true
+        }]
+      };
+    } else {
+      // Prepare data for division chart
+      const divisionMap = {};
+      
+      mockData.history.forEach(item => {
+        if (!divisionMap[item.kelas]) {
+          divisionMap[item.kelas] = 0;
+        }
+        divisionMap[item.kelas]++;
+      });
+      
+      const divisions = Object.keys(divisionMap);
+      const counts = divisions.map(div => divisionMap[div]);
+      
+      chartData = {
+        labels: divisions,
+        datasets: [{
+          label: 'Absensi per Divisi',
+          data: counts,
+          backgroundColor: [
+            'rgba(76, 201, 240, 0.6)',
+            'rgba(67, 97, 238, 0.6)',
+            'rgba(247, 37, 133, 0.6)',
+            'rgba(114, 9, 183, 0.6)',
+            'rgba(58, 12, 163, 0.6)',
+            'rgba(63, 55, 201, 0.6)',
+            'rgba(72, 149, 239, 0.6)',
+            'rgba(161, 99, 245, 0.6)'
+          ],
+          borderColor: 'rgba(255, 255, 255, 0.8)',
+          borderWidth: 2
+        }]
+      };
+    }
+    
+    // Create chart
+    window.absenceChart = new Chart(ctx, {
+      type: type === 'daily' ? 'line' : 'pie',
+      data: chartData,
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'bottom',
+            labels: {
+              color: 'white'
+            }
+          }
+        },
+        scales: type === 'daily' ? {
+          y: {
+            beginAtZero: true,
+            ticks: {
+              color: 'white'
+            },
+            grid: {
+              color: 'rgba(255, 255, 255, 0.1)'
+            }
+          },
+          x: {
+            ticks: {
+              color: 'white'
+            },
+            grid: {
+              color: 'rgba(255, 255, 255, 0.1)'
+            }
+          }
+        } : undefined
+      }
+    });
+  }
+  
+  // Initialize additional features
+  function initializeAdditionalFeatures() {
+    // Mock Chart.js if it doesn't exist
+    if (typeof Chart === 'undefined') {
+      window.Chart = class Chart {
+        constructor(ctx, config) {
+          this.config = config;
+          this.ctx = ctx;
+          this.render();
+        }
+        
+        render() {
+          const canvas = this.ctx.canvas;
+          const ctx = this.ctx;
+          
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+          
+          ctx.fillStyle = 'white';
+          ctx.font = '14px Arial';
+          ctx.textAlign = 'center';
+          ctx.fillText('Grafik ' + (this.config.type === 'line' ? 'Harian' : 'Divisi'), canvas.width / 2, canvas.height / 2);
+          ctx.fillText('(Chart.js tidak tersedia)', canvas.width / 2, canvas.height / 2 + 20);
+        }
+        
+        destroy() {
+          const canvas = this.ctx.canvas;
+          this.ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+      };
+    }
+    
+    // Add export feature
+    addExportFeature();
+    
+    // Add dark mode toggle
+    addDarkModeToggle();
+    
+    // Setup notifications
+    setupNotifications();
+    
+    // Setup visualization
+    setupDataVisualization();
+  }
+  
+  // Call the initialization function
+  setTimeout(initializeAdditionalFeatures, 1000);
+  
+  // Complete the app initialization by ensuring initial data is loaded
+  setTimeout(() => {
+    // Make sure we have initial stats and activities
+    fetchStats();
+    fetchLatestActivity();
+    
+    // Remove any initial loading indicators
+    const loadingElements = document.querySelectorAll('.activity-loading');
+    loadingElements.forEach(el => {
+      el.style.display = 'none';
+    });
+    
+    // Show a welcome notification if enabled
+    if (localStorage.getItem('notificationsEnabled') === 'true' && Notification.permission === 'granted') {
+      const userName = document.getElementById('profileName').textContent;
+      const notification = new Notification('Selamat Datang', {
+        body: `Halo ${userName}, selamat datang kembali di aplikasi Absensi Premium!`,
+        icon: '/favicon.ico'
+      });
+    }
+    
+    console.log('Absensi Premium aplikasi telah selesai dimuat ✅');
+  }, 2000);
   </script>
+
 </body>
 </html>
